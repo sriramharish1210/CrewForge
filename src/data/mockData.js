@@ -1,6 +1,5 @@
 export const LLM_MODELS = [
-  { id: 'gpt-4o', name: 'OpenAI GPT-4o', provider: 'OpenAI', badgeColor: 'purple' },
-  { id: 'claude-3-5', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', badgeColor: 'blue' },
+  { id: 'gemini-2-5-flash', name: 'Gemini 2.5 Flash', provider: 'Google', badgeColor: 'emerald' },
   { id: 'gemini-1-5', name: 'Gemini 1.5 Pro', provider: 'Google', badgeColor: 'emerald' },
   { id: 'llama-3', name: 'Llama 3 70B', provider: 'Meta (Open Source)', badgeColor: 'orange' }
 ];
@@ -26,7 +25,7 @@ export const DEFAULT_TEAMS = [
         role: 'Orchestrator',
         goal: 'Deconstruct prompt requests, delegate research sections, and compile final responses.',
         backstory: 'An efficient manager expert in task routing and quality control.',
-        model: 'gpt-4o',
+        model: 'gemini-2-5-flash',
         tools: []
       },
       {
@@ -35,7 +34,7 @@ export const DEFAULT_TEAMS = [
         role: 'Data Miner',
         goal: 'Gather highly accurate sources and extract data from the web regarding the topic.',
         backstory: 'A meticulous investigator that values source credibility and fact-checking.',
-        model: 'claude-3-5',
+        model: 'gemini-2-5-flash',
         tools: ['web_search', 'web_scraper']
       },
       {
@@ -61,7 +60,7 @@ export const DEFAULT_TEAMS = [
         role: 'Keyword Auditor',
         goal: 'Identify high-value keywords and define structural hierarchy to rank on search engines.',
         backstory: 'A growth hacker obsessed with algorithms, search intent, and structural design.',
-        model: 'gpt-4o',
+        model: 'gemini-2-5-flash',
         tools: ['web_search']
       },
       {
@@ -70,7 +69,7 @@ export const DEFAULT_TEAMS = [
         role: 'Creative Writer',
         goal: 'Draft emotional, high-conversion landing page copy incorporating selected keywords.',
         backstory: 'A direct response copywriter trained on top-converting landing page formulas.',
-        model: 'claude-3-5',
+        model: 'gemini-2-5-flash',
         tools: []
       }
     ]
@@ -87,7 +86,7 @@ export const DEFAULT_TEAMS = [
         role: 'System Designer',
         goal: 'Outline component hierarchies and database schema guidelines for features.',
         backstory: 'Experienced designer specialized in design patterns and micro-architectures.',
-        model: 'gpt-4o',
+        model: 'gemini-2-5-flash',
         tools: []
       },
       {
@@ -96,7 +95,7 @@ export const DEFAULT_TEAMS = [
         role: 'Coder',
         goal: 'Implement fully working JavaScript code matching Architect specifications.',
         backstory: 'A fast developer focused on clean, optimized, and lint-free code.',
-        model: 'claude-3-5',
+        model: 'gemini-2-5-flash',
         tools: ['code_interpreter']
       },
       {

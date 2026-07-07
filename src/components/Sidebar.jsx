@@ -63,7 +63,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
               letterSpacing: '-0.02em',
             }}
           >
-            Agent<span className="gradient-text">Forge</span>
+            Crew<span className="gradient-text">Forge</span>
           </span>
         )}
       </div>

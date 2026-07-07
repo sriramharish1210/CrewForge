@@ -2,6 +2,190 @@ import React, { useState } from 'react';
 import { Plus, Trash2, Cpu, Wrench, Shield, Check, Info, ArrowDown } from 'lucide-react';
 import { LLM_MODELS, AVAILABLE_TOOLS } from '../data/mockData';
 
+const CREW_TEMPLATES = [
+  {
+    id: 'startup',
+    name: 'Startup Crew',
+    icon: '🚀',
+    description: 'Ideate, design, and validate startup MVPs.',
+    teamName: 'Startup Launch Crew',
+    teamDescription: 'Coordinating PM, Tech Architect, and Growth Hacker to launch an MVP.',
+    routingType: 'sequential',
+    agents: [
+      {
+        id: 'agent-startup-1',
+        name: 'Product Manager',
+        role: 'Product Lead',
+        goal: 'Define MVP scope, feature roadmap, and user stories.',
+        backstory: 'Ex-FAANG Lead PM who designs lean, scalable software solutions.',
+        model: 'gemini-2-5-flash',
+        tools: ['web_search']
+      },
+      {
+        id: 'agent-startup-2',
+        name: 'Tech Architect',
+        role: 'System Designer',
+        goal: 'Design microservices architecture, database schemas, and stack choices.',
+        backstory: 'Veteran system designer obsessed with performance, scalability, and clean code.',
+        model: 'gemini-2-5-flash',
+        tools: ['code_interpreter']
+      },
+      {
+        id: 'agent-startup-3',
+        name: 'GTM Marketer',
+        role: 'Growth Hacker',
+        goal: 'Create a launching campaign, identify key channels, and structure marketing funnels.',
+        backstory: 'Creative marketer who has scaled multiple SaaS startups to $1M ARR.',
+        model: 'gemini-2-5-flash',
+        tools: ['web_search']
+      }
+    ]
+  },
+  {
+    id: 'marketing',
+    name: 'Marketing Crew',
+    icon: '📈',
+    description: 'Optimize keyword SEO, write landing copy, edit copy.',
+    teamName: 'SaaS Marketing Squad',
+    teamDescription: 'Keyword strategist, copywriter, and editor collaborating on high-converting copy.',
+    routingType: 'sequential',
+    agents: [
+      {
+        id: 'agent-marketing-1',
+        name: 'SEO Specialist',
+        role: 'Keyword Optimizer',
+        goal: 'Perform keyword research and output SEO optimized content outlines.',
+        backstory: 'An SEO veteran specializing in search algorithms, competitor analysis, and search intent.',
+        model: 'gemini-2-5-flash',
+        tools: ['web_search']
+      },
+      {
+        id: 'agent-marketing-2',
+        name: 'Copywriter',
+        role: 'Creative Writer',
+        goal: 'Draft engaging landing page copy and social posts containing selected keywords.',
+        backstory: 'Direct-response copywriter who knows how to captivate audiences and drive conversions.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      },
+      {
+        id: 'agent-marketing-3',
+        name: 'Editor',
+        role: 'Content Auditor',
+        goal: 'Review and refine draft copies for tone consistency, readability, and grammar.',
+        backstory: 'A meticulous proofreader and editor with an eye for detail and styling.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      }
+    ]
+  },
+  {
+    id: 'study',
+    name: 'Study Crew',
+    icon: '📚',
+    description: 'Explain topics and generate interactive quizzes.',
+    teamName: 'Personal Study Group',
+    teamDescription: 'Tutor and assessment agent working together to explain topics and test knowledge.',
+    routingType: 'sequential',
+    agents: [
+      {
+        id: 'agent-study-1',
+        name: 'Tutor Agent',
+        role: 'SME Educator',
+        goal: 'Break down dense textbooks and complex concepts into clear, simple analogies.',
+        backstory: 'An encouraging and highly pedagogical professor who loves teaching complex subjects.',
+        model: 'gemini-2-5-flash',
+        tools: ['file_reader']
+      },
+      {
+        id: 'agent-study-2',
+        name: 'Quiz Creator',
+        role: 'Assessor',
+        goal: 'Design flashcards and interactive multiple-choice questions to test understanding.',
+        backstory: 'Assessment specialist focused on active recall and spaced repetition principles.',
+        model: 'gemini-2-5-flash',
+        tools: ['code_interpreter']
+      }
+    ]
+  },
+  {
+    id: 'content',
+    name: 'Content Crew',
+    icon: '✍️',
+    description: 'Creative direction, script writing, manager.',
+    teamName: 'Social Content Studio',
+    teamDescription: 'Director, writer, and manager repurposing long-form content across social media.',
+    routingType: 'supervisor',
+    agents: [
+      {
+        id: 'agent-content-1',
+        name: 'Content Director',
+        role: 'Creative Director',
+        goal: 'Outline monthly content calendars, define content hooks, and supervise production.',
+        backstory: 'A viral creator with over 1M followers who knows exactly what gets clicked and shared.',
+        model: 'gemini-2-5-flash',
+        tools: ['web_search']
+      },
+      {
+        id: 'agent-content-2',
+        name: 'Script Writer',
+        role: 'Video Copywriter',
+        goal: 'Write retention-optimized video scripts for YouTube, TikTok, or Reels.',
+        backstory: 'Ex-Hollywood script writer specialized in holding viewer retention and storytelling.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      },
+      {
+        id: 'agent-content-3',
+        name: 'Distributor Agent',
+        role: 'Social Media Manager',
+        goal: 'Repurpose long-form scripts into tweets, threads, and LinkedIn posts.',
+        backstory: 'Social native who drafts concise, punchy posts optimized for social algorithms.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      }
+    ]
+  },
+  {
+    id: 'research',
+    name: 'Research Crew',
+    icon: '🔬',
+    description: 'Aggregate, scrape literature and draft reports.',
+    teamName: 'Scientific Literature Reviewers',
+    teamDescription: 'Orchestrating literature harvesting and report writing for deep analysis.',
+    routingType: 'supervisor',
+    agents: [
+      {
+        id: 'agent-research-1',
+        name: 'Research Supervisor',
+        role: 'Orchestrator',
+        goal: 'Plan literature research phases, verify source quality, and orchestrate workers.',
+        backstory: 'A senior principal investigator with an h-index of 50 and rigorous standards.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      },
+      {
+        id: 'agent-research-2',
+        name: 'Literature Harvester',
+        role: 'Data Scraping Specialist',
+        goal: 'Extract key figures, methodologies, and outcomes from scientific databases.',
+        backstory: 'An automated data extraction expert with zero tolerance for hallucinations.',
+        model: 'gemini-2-5-flash',
+        tools: ['web_search', 'web_scraper', 'file_reader']
+      },
+      {
+        id: 'agent-research-3',
+        name: 'Synthesis Writer',
+        role: 'Technical Synthesizer',
+        goal: 'Produce comprehensive peer-review quality reports compiling all research findings.',
+        backstory: 'A scientific communicator skilled at connecting disparate research points beautifully.',
+        model: 'gemini-2-5-flash',
+        tools: []
+      }
+    ]
+  }
+];
+
 export default function CreateTeam({ setCurrentPage, savedTeams, setSavedTeams }) {
   const [teamName, setTeamName] = useState('');
   const [teamDescription, setTeamDescription] = useState('');
@@ -13,7 +197,7 @@ export default function CreateTeam({ setCurrentPage, savedTeams, setSavedTeams }
       role: 'Orchestrator',
       goal: 'Break down complex prompts, delegate items, and verify quality.',
       backstory: 'An efficient manager expert in routing and validating work.',
-      model: 'gpt-4o',
+      model: 'gemini-2-5-flash',
       tools: []
     },
     {
@@ -22,7 +206,7 @@ export default function CreateTeam({ setCurrentPage, savedTeams, setSavedTeams }
       role: 'Data Miner',
       goal: 'Gather sources and query key parameters.',
       backstory: 'A detail-oriented analyst prioritizing raw statistics.',
-      model: 'claude-3-5',
+      model: 'gemini-2-5-flash',
       tools: ['web_search']
     }
   ]);
@@ -57,7 +241,7 @@ export default function CreateTeam({ setCurrentPage, savedTeams, setSavedTeams }
       role: 'Contributor',
       goal: 'Complete specific assignments delegated by the team.',
       backstory: 'A helpful AI collaborator with strong execution capability.',
-      model: 'gpt-4o',
+      model: 'gemini-2-5-flash',
       tools: []
     };
     setAgents([...agents, newAgent]);
@@ -112,6 +296,61 @@ export default function CreateTeam({ setCurrentPage, savedTeams, setSavedTeams }
           <button className="btn btn-primary" onClick={handleSaveTeam}>
             Save Team
           </button>
+        </div>
+      </div>
+      {/* Choose a Crew Template Section */}
+      <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <h2 style={{ fontSize: '16px', fontWeight: 600 }}>Choose a Crew Template</h2>
+          <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Quick-start by choosing a predefined template. This will automatically populate the crew builder.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
+          {CREW_TEMPLATES.map((tpl) => (
+            <div
+              key={tpl.id}
+              onClick={() => {
+                setTeamName(tpl.teamName);
+                setTeamDescription(tpl.teamDescription);
+                setRoutingType(tpl.routingType);
+                setAgents(tpl.agents);
+                setSelectedAgentId(tpl.agents[0].id);
+              }}
+              style={{
+                backgroundColor: 'var(--bg-secondary)',
+                border: '1px solid var(--border-primary)',
+                borderRadius: '10px',
+                padding: '16px',
+                cursor: 'pointer',
+                transition: 'var(--transition-smooth)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent-purple)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = 'var(--glow-shadow)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-primary)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div style={{ fontSize: '24px' }}>{tpl.icon}</div>
+              <div>
+                <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{tpl.name}</h3>
+                <p style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px', lineHeight: '1.4' }}>
+                  {tpl.description}
+                </p>
+              </div>
+              <span className="badge badge-purple" style={{ alignSelf: 'flex-start', fontSize: '9px', marginTop: 'auto' }}>
+                {tpl.agents.length} Agents
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 

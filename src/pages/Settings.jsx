@@ -3,22 +3,14 @@ import { Eye, EyeOff, ShieldCheck, Key, Save, Server, Cpu, Check, AlertCircle } 
 
 export default function Settings({ apiKeyStatus, setApiKeyStatus }) {
   const [keys, setKeys] = useState({
-    openai: localStorage.getItem('forge_key_openai') || '',
-    anthropic: localStorage.getItem('forge_key_anthropic') || '',
-    gemini: localStorage.getItem('forge_key_gemini') || '',
-    serper: localStorage.getItem('forge_key_serper') || ''
+    gemini: localStorage.getItem('forge_key_gemini') || ''
   });
 
   const [visibleKeys, setVisibleKeys] = useState({
-    openai: false,
-    anthropic: false,
-    gemini: false,
-    serper: false
+    gemini: false
   });
 
   const [validationStates, setValidationStates] = useState({
-    openai: 'idle', // idle, loading, success, error
-    anthropic: 'idle',
     gemini: 'idle'
   });
 
@@ -31,13 +23,10 @@ export default function Settings({ apiKeyStatus, setApiKeyStatus }) {
   };
 
   const handleSaveKeys = () => {
-    localStorage.setItem('forge_key_openai', keys.openai);
-    localStorage.setItem('forge_key_anthropic', keys.anthropic);
     localStorage.setItem('forge_key_gemini', keys.gemini);
-    localStorage.setItem('forge_key_serper', keys.serper);
     
     // Check if any keys are saved to toggle system indicator
-    const hasKeys = !!(keys.openai || keys.anthropic || keys.gemini);
+    const hasKeys = !!keys.gemini;
     setApiKeyStatus(hasKeys);
 
     alert('Security keys saved to browser local session storage.');
@@ -89,66 +78,6 @@ export default function Settings({ apiKeyStatus, setApiKeyStatus }) {
           {/* Key fields */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             
-            {/* OpenAI Key */}
-            <div>
-              <div className="flex-between" style={{ marginBottom: '6px' }}>
-                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>OPENAI API KEY</label>
-                <button 
-                  onClick={() => validateKey('openai')} 
-                  style={{ background: 'transparent', border: 'none', color: 'var(--accent-purple)', fontSize: '11px', cursor: 'pointer', fontWeight: 500 }}
-                >
-                  {validationStates.openai === 'loading' ? 'Verifying...' : validationStates.openai === 'success' ? 'Verified ✓' : 'Test Key'}
-                </button>
-              </div>
-
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <input 
-                  type={visibleKeys.openai ? 'text' : 'password'}
-                  placeholder="sk-proj-..."
-                  value={keys.openai}
-                  onChange={(e) => handleKeyChange('openai', e.target.value)}
-                  className="input-field"
-                  style={{ paddingRight: '40px' }}
-                />
-                <button 
-                  onClick={() => toggleVisibility('openai')}
-                  style={{ position: 'absolute', right: '12px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                >
-                  {visibleKeys.openai ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Anthropic Key */}
-            <div>
-              <div className="flex-between" style={{ marginBottom: '6px' }}>
-                <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>ANTHROPIC API KEY</label>
-                <button 
-                  onClick={() => validateKey('anthropic')} 
-                  style={{ background: 'transparent', border: 'none', color: 'var(--accent-purple)', fontSize: '11px', cursor: 'pointer', fontWeight: 500 }}
-                >
-                  {validationStates.anthropic === 'loading' ? 'Verifying...' : validationStates.anthropic === 'success' ? 'Verified ✓' : 'Test Key'}
-                </button>
-              </div>
-
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <input 
-                  type={visibleKeys.anthropic ? 'text' : 'password'}
-                  placeholder="sk-ant-..."
-                  value={keys.anthropic}
-                  onChange={(e) => handleKeyChange('anthropic', e.target.value)}
-                  className="input-field"
-                  style={{ paddingRight: '40px' }}
-                />
-                <button 
-                  onClick={() => toggleVisibility('anthropic')}
-                  style={{ position: 'absolute', right: '12px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                >
-                  {visibleKeys.anthropic ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
             {/* Gemini Key */}
             <div>
               <div className="flex-between" style={{ marginBottom: '6px' }}>
@@ -179,27 +108,6 @@ export default function Settings({ apiKeyStatus, setApiKeyStatus }) {
               </div>
             </div>
 
-            {/* Serper / Google Search Key */}
-            <div>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>SERPER API KEY (GOOGLE WEB SEARCH TOOL)</label>
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <input 
-                  type={visibleKeys.serper ? 'text' : 'password'}
-                  placeholder="Insert Serper API key for search widgets..."
-                  value={keys.serper}
-                  onChange={(e) => handleKeyChange('serper', e.target.value)}
-                  className="input-field"
-                  style={{ paddingRight: '40px' }}
-                />
-                <button 
-                  onClick={() => toggleVisibility('serper')}
-                  style={{ position: 'absolute', right: '12px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                >
-                  {visibleKeys.serper ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -212,18 +120,16 @@ export default function Settings({ apiKeyStatus, setApiKeyStatus }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Supervisor Tier Core Model</label>
-                <select className="input-field" defaultValue="gpt-4o">
-                  <option value="gpt-4o">OpenAI GPT-4o (Default Orchestrator)</option>
-                  <option value="claude-3-5">Claude 3.5 Sonnet</option>
+                <select className="input-field" defaultValue="gemini-2-5-flash">
+                  <option value="gemini-2-5-flash">Gemini 2.5 Flash (Default Orchestrator)</option>
                   <option value="gemini-1-5">Gemini 1.5 Pro</option>
                 </select>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Worker Tier Core Model</label>
-                <select className="input-field" defaultValue="claude-3-5">
-                  <option value="gpt-4o">OpenAI GPT-4o</option>
-                  <option value="claude-3-5">Claude 3.5 Sonnet (Default Worker)</option>
+                <select className="input-field" defaultValue="gemini-2-5-flash">
+                  <option value="gemini-2-5-flash">Gemini 2.5 Flash (Default Worker)</option>
                   <option value="gemini-1-5">Gemini 1.5 Pro</option>
                 </select>
               </div>

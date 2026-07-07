@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
@@ -15,17 +15,28 @@ function App() {
   
   // API Key Status state
   const [apiKeyStatus, setApiKeyStatus] = useState(() => {
-    return !!(
-      localStorage.getItem('forge_key_openai') || 
-      localStorage.getItem('forge_key_anthropic') || 
-      localStorage.getItem('forge_key_gemini')
-    );
+    return !!localStorage.getItem('forge_key_gemini');
   });
 
   // Global State for Teams and Execution Runs
-  const [savedTeams, setSavedTeams] = useState([]);
+  const [savedTeams, setSavedTeams] = useState(() => {
+    const local = localStorage.getItem('forge_saved_teams');
+    return local ? JSON.parse(local) : [];
+  });
   const [selectedTeamId, setSelectedTeamId] = useState('academic-researcher');
-  const [historyList, setHistoryList] = useState(MOCK_HISTORY);
+  const [historyList, setHistoryList] = useState(() => {
+    const local = localStorage.getItem('forge_history_list');
+    return local ? JSON.parse(local) : MOCK_HISTORY;
+  });
+
+  // Sync to local storage
+  useEffect(() => {
+    localStorage.setItem('forge_saved_teams', JSON.stringify(savedTeams));
+  }, [savedTeams]);
+
+  useEffect(() => {
+    localStorage.setItem('forge_history_list', JSON.stringify(historyList));
+  }, [historyList]);
 
   const handleAddHistoryItem = (newItem) => {
     setHistoryList(prev => [newItem, ...prev]);

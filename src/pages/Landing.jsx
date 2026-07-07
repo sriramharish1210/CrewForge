@@ -207,7 +207,7 @@ export default function Landing({ setCurrentPage }) {
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--accent-purple)' }} />
                   <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff' }}>Supervisor Agent</span>
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>Orchestrator Node • GPT-4o</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>Orchestrator Node • Gemini 2.5 Flash</div>
               </div>
 
               {/* Line Connector 1 */}
@@ -237,7 +237,7 @@ export default function Landing({ setCurrentPage }) {
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--accent-blue)' }} />
                   <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff' }}>Web Researcher</span>
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>Data Miner • Claude 3.5</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>Data Miner • Gemini 2.5 Flash</div>
               </div>
 
               {/* Line Connector 2 */}
