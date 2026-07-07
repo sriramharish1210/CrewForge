@@ -12,7 +12,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
   ];
 
   return (
-    <div 
+    <div
       className="glass-panel"
       style={{
         width: isCollapsed ? '72px' : '260px',
@@ -28,7 +28,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
       }}
     >
       {/* Brand Section */}
-      <div 
+      <div
         style={{
           padding: '24px 20px',
           display: 'flex',
@@ -39,7 +39,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
           whiteSpace: 'nowrap',
         }}
       >
-        <div 
+        <div
           style={{
             minWidth: '36px',
             height: '36px',
@@ -54,7 +54,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
           <Cpu size={20} color="#fff" />
         </div>
         {!isCollapsed && (
-          <span 
+          <span
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 700,
@@ -69,7 +69,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
       </div>
 
       {/* Navigation Menu */}
-      <nav 
+      <nav
         style={{
           flex: 1,
           padding: '24px 12px',
@@ -117,7 +117,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
             >
               {/* Left glow strip for active item */}
               {isActive && (
-                <div 
+                <div
                   style={{
                     position: 'absolute',
                     left: 0,
@@ -131,9 +131,9 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
               )}
 
               <Icon size={18} style={{ color: isActive ? 'var(--accent-purple)' : 'inherit' }} />
-              
+
               {!isCollapsed && (
-                <span 
+                <span
                   style={{
                     fontSize: '14px',
                     fontWeight: isActive ? 500 : 400,
@@ -148,7 +148,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
       </nav>
 
       {/* Collapse Trigger Button */}
-      <div 
+      <div
         style={{
           padding: '12px 16px',
           display: 'flex',
@@ -179,7 +179,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
       </div>
 
       {/* User Section */}
-      <div 
+      <div
         style={{
           padding: '20px 16px',
           borderTop: '1px solid var(--border-primary)',
@@ -190,7 +190,7 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
           whiteSpace: 'nowrap',
         }}
       >
-        <div 
+        <div
           style={{
             minWidth: '36px',
             height: '36px',
@@ -206,26 +206,26 @@ export default function Sidebar({ currentPage, setCurrentPage, isCollapsed, setI
             fontSize: '14px',
           }}
         >
-          SE
+          SH
         </div>
         {!isCollapsed && (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span 
+            <span
               style={{
                 fontSize: '14px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
               }}
             >
-              aci_designer
+              SRIRAM
             </span>
-            <span 
+            <span
               style={{
                 fontSize: '11px',
                 color: 'var(--text-muted)',
               }}
             >
-              Staff UX Engineer
+              Founder • CrewForge
             </span>
           </div>
         )}
